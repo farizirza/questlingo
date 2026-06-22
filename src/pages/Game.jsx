@@ -53,18 +53,16 @@ export default function Game() {
 
   const backgroundOrbs = (
     <div className="absolute inset-0 overflow-hidden pointer-events-none z-0">
-      <motion.div
-        className="absolute top-[-10%] right-[-5%] w-[40vw] h-[40vw] rounded-full bg-primary/5 blur-[100px]"
-        animate={{ x: [0, -30, 0], y: [0, 40, 0] }}
-        transition={{ duration: 15, repeat: Infinity, ease: "linear" }}
+      <div
+        className="absolute top-[-10%] right-[-5%] w-[40vw] h-[40vw] rounded-full opacity-[0.15]"
+        style={{ background: 'radial-gradient(circle, var(--primary) 0%, transparent 70%)' }}
       />
-      <motion.div
-        className="absolute bottom-[-10%] left-[-5%] w-[40vw] h-[40vw] rounded-full bg-success/5 blur-[100px]"
-        animate={{ x: [0, 30, 0], y: [0, -40, 0] }}
-        transition={{ duration: 12, repeat: Infinity, ease: "linear" }}
+      <div
+        className="absolute bottom-[-10%] left-[-5%] w-[40vw] h-[40vw] rounded-full opacity-[0.15]"
+        style={{ background: 'radial-gradient(circle, var(--success) 0%, transparent 70%)' }}
       />
       {/* CSS Noise Overlay */}
-      <div className="absolute inset-0 opacity-[0.03] mix-blend-overlay" style={{ backgroundImage: 'url("data:image/svg+xml,%3Csvg viewBox=%220 0 200 200%22 xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cfilter id=%22noiseFilter%22%3E%3CfeTurbulence type=%22fractalNoise%22 baseFrequency=%220.65%22 numOctaves=%223%22 stitchTiles=%22stitch%22/%3E%3C/filter%3E%3Crect width=%22100%25%22 height=%22100%25%22 filter=%22url(%23noiseFilter)%22/%3E%3C/svg%3E")' }}></div>
+      <div className="absolute inset-0 opacity-[0.02]" style={{ backgroundImage: 'url("data:image/svg+xml,%3Csvg viewBox=%220 0 200 200%22 xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cfilter id=%22noiseFilter%22%3E%3CfeTurbulence type=%22fractalNoise%22 baseFrequency=%220.65%22 numOctaves=%223%22 stitchTiles=%22stitch%22/%3E%3C/filter%3E%3Crect width=%22100%25%22 height=%22100%25%22 filter=%22url(%23noiseFilter)%22/%3E%3C/svg%3E")' }}></div>
     </div>
   );
 
