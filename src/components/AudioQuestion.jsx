@@ -1,96 +1,112 @@
-import { useRef, useEffect } from "react";
+import { useState, useRef, useEffect } from "react";
 import { motion } from "framer-motion";
-import { FiHeadphones, FiVolume2 } from "react-icons/fi";
+import { FiPlay, FiPause, FiVolume2 } from "react-icons/fi";
 import OptionButton from "./OptionButton";
 
 export default function AudioQuestion({
   question,
-  currentIndex,
-  totalQuestions,
   isAnswered,
   selectedAnswer,
   onAnswer,
 }) {
   const audioRef = useRef(null);
+  const [isPlaying, setIsPlaying] = useState(false);
+  const [progress, setProgress] = useState(0);
 
-  // Reset audio and reload when media URL changes
+  // Stop audio if moving to next question
   useEffect(() => {
-    if (audioRef.current) {
-      audioRef.current.currentTime = 0;
-      audioRef.current.load();
+    return () => {
+      if (audioRef.current) {
+        audioRef.current.pause();
+      }
+    };
+  }, [question]);
+
+  const toggleAudio = () => {
+    if (isPlaying) {
+      audioRef.current.pause();
+    } else {
+      audioRef.current.play();
     }
-  }, [question.media_url]);
+    setIsPlaying(!isPlaying);
+  };
+
+  const handleTimeUpdate = () => {
+    const current = audioRef.current.currentTime;
+    const duration = audioRef.current.duration;
+    setProgress((current / duration) * 100 || 0);
+  };
+
+  const handleEnded = () => {
+    setIsPlaying(false);
+    setProgress(100);
+    // Reset after a short delay
+    setTimeout(() => setProgress(0), 1000);
+  };
 
   return (
-    <motion.div
-      className="space-y-6"
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      exit={{ opacity: 0, y: -20 }}
-      transition={{ duration: 0.25 }}
-    >
-      {/* Question Container */}
-      <div className="bg-white bg-opacity-15 backdrop-blur rounded-2xl p-8 border-2 border-white border-opacity-30 drop-shadow-lg">
-        <div className="mb-6">
-          <div className="flex items-center gap-2 mb-2">
-            <FiHeadphones className="text-lg" />
-            <p className="text-sm font-bold text-white opacity-80">
-              Question {currentIndex + 1}
-            </p>
-          </div>
-          <h2 className="text-3xl md:text-4xl font-bold mb-6 text-white drop-shadow-md">
-            {question.question}
-          </h2>
-
-          {/* Audio Player */}
-          {question.media_url && (
-            <motion.div
-              className="bg-gradient-to-r from-purple-500 to-pink-500 rounded-2xl p-4 border-2 border-white border-opacity-30"
-              initial={{ opacity: 0, scale: 0.95 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.2 }}
+    <div className="bezel-outer">
+      <div className="bezel-inner p-8 md:p-10 flex flex-col items-center max-w-2xl mx-auto">
+        
+        {/* Custom Audio Player */}
+        <div className="w-full bg-slate-50 rounded-[2rem] border border-slate-100 p-8 flex flex-col items-center mb-8 shadow-inner">
+          <audio
+            ref={audioRef}
+            src={question.media_url}
+            onTimeUpdate={handleTimeUpdate}
+            onEnded={handleEnded}
+            className="hidden"
+          />
+          
+          <div className="flex items-center justify-center gap-6 w-full">
+            <button
+              onClick={toggleAudio}
+              className="w-16 h-16 bg-primary text-white rounded-full flex items-center justify-center shadow-[0_10px_20px_-10px_rgba(37,99,235,0.5)] hover:scale-105 active:scale-95 transition-all duration-300"
             >
-              <div className="flex items-center gap-2">
-                <FiVolume2 className="text-lg" />
-                <p className="text-sm font-bold text-white drop-shadow-md">
-                  Listen carefully:
-                </p>
+              {isPlaying ? <FiPause className="text-2xl" /> : <FiPlay className="text-2xl ml-1" />}
+            </button>
+            
+            <div className="flex-1 max-w-xs flex items-center gap-3">
+              <FiVolume2 className="text-slate-400" />
+              <div className="w-full h-2 bg-slate-200 rounded-full overflow-hidden">
+                <motion.div
+                  className="h-full bg-primary"
+                  initial={{ width: 0 }}
+                  animate={{ width: `${progress}%` }}
+                  transition={{ ease: "linear" }}
+                />
               </div>
-              <audio
-                ref={audioRef}
-                controls
-                className="w-full rounded-lg"
-                controlsList="nodownload"
-              >
-                <source src={question.media_url} type="audio/mpeg" />
-                Your browser does not support the audio element.
-              </audio>
-            </motion.div>
-          )}
+            </div>
+          </div>
+          <p className="text-sm font-bold uppercase tracking-widest text-slate-400 mt-6">
+            {isPlaying ? "Playing Audio..." : "Click to Listen"}
+          </p>
         </div>
-      </div>
 
-      {/* Options */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        {question.options &&
-          question.options.map((option, idx) => {
-            const optionKey = typeof option === "string" ? option : option.key;
-            const isSelected = selectedAnswer === optionKey;
-            const isCorrect = optionKey === question.answer;
+        {/* Question Text */}
+        <h2 className="text-2xl md:text-3xl font-display font-bold text-slate-900 leading-tight mb-8 text-center">
+          {question.question}
+        </h2>
 
+        {/* Options */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 w-full">
+          {question.options.map((option, idx) => {
+            const optKey = typeof option === "string" ? option : option.key;
+            const optText = typeof option === "string" ? option : option.text;
+            
             return (
               <OptionButton
-                key={idx}
-                option={option}
-                index={idx}
-                isSelected={isSelected}
-                isCorrect={isCorrect}
+                key={optKey || idx}
+                text={optText}
+                onClick={() => onAnswer(optKey)}
+                isSelected={selectedAnswer === optKey}
+                isCorrect={isAnswered && optKey === question.answer}
                 disabled={isAnswered}
-                onClick={() => !isAnswered && onAnswer(optionKey)}
               />
             );
           })}
+        </div>
       </div>
-    </motion.div>
+    </div>
   );
 }

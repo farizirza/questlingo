@@ -1,116 +1,129 @@
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
-import { FiBook, FiZap, FiStar, FiPlay } from "react-icons/fi";
+import { FiBook, FiAward, FiClock, FiArrowRight } from "react-icons/fi";
 
 export default function Home() {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-400 via-pink-400 to-blue-400 text-white flex flex-col items-center justify-center px-4 relative overflow-hidden">
-      {/* Animated background elements */}
-      <motion.div
-        className="absolute top-10 left-10 w-20 h-20 bg-yellow-300 rounded-full blur-2xl opacity-30"
-        animate={{ y: [0, 20, 0] }}
-        transition={{ duration: 4, repeat: Infinity }}
-      />
-      <motion.div
-        className="absolute bottom-20 right-10 w-32 h-32 bg-green-300 rounded-full blur-2xl opacity-20"
-        animate={{ x: [0, 30, 0] }}
-        transition={{ duration: 5, repeat: Infinity }}
-      />
-
-      <motion.div
-        className="text-center space-y-8 relative z-10"
-        initial={{ opacity: 0, y: -20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6 }}
-      >
-        {/* Title with playful bounce */}
+    <div className="min-h-[100dvh] bg-background flex items-center justify-center p-4 sm:p-8 font-sans relative overflow-hidden">
+      {/* Soft Ethereal Orbs Background */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <motion.div
-          animate={{ y: [0, -10, 0] }}
-          transition={{ duration: 2, repeat: Infinity }}
-        >
-          <div className="flex items-center justify-center gap-3 mb-4">
-            <FiBook className="text-6xl md:text-7xl text-yellow-200" />
-            <h1 className="text-6xl md:text-7xl font-black bg-clip-text text-transparent bg-gradient-to-r from-white via-yellow-200 to-white drop-shadow-lg">
-              QUESTLINGO
-            </h1>
-          </div>
-        </motion.div>
-
-        {/* Subtitle */}
+          className="absolute top-[10%] -left-[10%] w-[40vw] h-[40vw] rounded-full bg-primary/5 blur-[100px]"
+          animate={{ x: [0, 50, 0], y: [0, 30, 0] }}
+          transition={{ duration: 15, repeat: Infinity, ease: "linear" }}
+        />
         <motion.div
-          className="flex items-center justify-center gap-2 text-lg md:text-2xl font-bold text-white drop-shadow-md"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.2, duration: 0.6 }}
-        >
-          <span>Master English with Fun!</span>
-          <FiZap className="text-2xl md:text-3xl" />
-        </motion.div>
+          className="absolute bottom-[10%] -right-[10%] w-[40vw] h-[40vw] rounded-full bg-success/5 blur-[100px]"
+          animate={{ x: [0, -40, 0], y: [0, -20, 0] }}
+          transition={{ duration: 12, repeat: Infinity, ease: "linear" }}
+        />
+        {/* CSS Noise Overlay */}
+        <div className="absolute inset-0 opacity-[0.03] mix-blend-overlay" style={{ backgroundImage: 'url("data:image/svg+xml,%3Csvg viewBox=%220 0 200 200%22 xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cfilter id=%22noiseFilter%22%3E%3CfeTurbulence type=%22fractalNoise%22 baseFrequency=%220.65%22 numOctaves=%223%22 stitchTiles=%22stitch%22/%3E%3C/filter%3E%3Crect width=%22100%25%22 height=%22100%25%22 filter=%22url(%23noiseFilter)%22/%3E%3C/svg%3E")' }}></div>
+      </div>
 
+      <div className="max-w-6xl w-full mx-auto relative z-10 grid grid-cols-1 md:grid-cols-12 gap-8 md:gap-12 items-center">
+        
+        {/* Left Column - Typography & CTA (Editorial Split) */}
         <motion.div
-          className="text-base md:text-lg text-white max-w-2xl drop-shadow-md font-semibold space-y-2"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.4, duration: 0.6 }}
+          className="md:col-span-7 space-y-10 py-12"
+          initial={{ opacity: 0, y: 40 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, ease: [0.32, 0.72, 0, 1] }}
         >
-          <p>Challenge yourself with grammar, audio, and image questions.</p>
-          <div className="flex items-center justify-center gap-2">
-            <span>Learn. Play. Succeed.</span>
-            <FiStar className="text-xl" />
-          </div>
-        </motion.div>
-
-        {/* Stats preview */}
-        <motion.div
-          className="grid grid-cols-3 gap-4 my-6 max-w-md mx-auto"
-          initial={{ opacity: 0, scale: 0.8 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ delay: 0.6, duration: 0.6 }}
-        >
-          <div className="bg-white bg-opacity-20 backdrop-blur rounded-lg p-3 border-2 border-white border-opacity-30">
-            <p className="text-3xl">25</p>
-            <p className="text-xs font-semibold">Questions</p>
-          </div>
-          <div className="bg-white bg-opacity-20 backdrop-blur rounded-lg p-3 border-2 border-white border-opacity-30">
-            <p className="text-3xl">20m</p>
-            <p className="text-xs font-semibold">Time</p>
-          </div>
-          <div className="bg-white bg-opacity-20 backdrop-blur rounded-lg p-3 border-2 border-white border-opacity-30">
-            <p className="text-3xl">100%</p>
-            <p className="text-xs font-semibold">Fun</p>
-          </div>
-        </motion.div>
-
-        {/* CTA Button */}
-        <motion.div
-          className="flex justify-center"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.8, duration: 0.6 }}
-        >
-          <Link to="/game">
-            <motion.button
-              className="px-10 py-4 bg-gradient-to-r from-orange-400 to-red-400 hover:from-orange-500 hover:to-red-500 rounded-full font-bold text-lg text-white drop-shadow-lg border-2 border-white border-opacity-50 flex items-center gap-2"
-              whileHover={{ scale: 1.1, rotate: 2 }}
-              whileTap={{ scale: 0.95 }}
+          <div className="space-y-6">
+            <motion.div
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ delay: 0.2, duration: 0.6 }}
+              className="inline-flex items-center gap-2 bg-white/60 backdrop-blur-md border border-slate-200/50 px-4 py-2 rounded-full shadow-sm"
             >
-              <FiPlay className="text-lg" />
-              <span>Start Quiz Now!</span>
-            </motion.button>
-          </Link>
+              <span className="w-2 h-2 rounded-full bg-success animate-pulse"></span>
+              <span className="text-xs font-bold uppercase tracking-[0.15em] text-slate-500">Quest Mode Active</span>
+            </motion.div>
+            
+            <h1 className="text-6xl md:text-7xl lg:text-8xl font-display font-bold leading-[0.95] text-slate-900 tracking-[-0.03em]">
+              Master <br />
+              <span className="text-transparent bg-clip-text bg-gradient-to-br from-primary to-indigo-500">Language</span><br />
+              Through Play.
+            </h1>
+            
+            <p className="text-xl md:text-2xl text-slate-500 font-medium max-w-xl leading-relaxed">
+              Embark on an interactive journey to sharpen your grammar, listening, and vocabulary skills.
+            </p>
+          </div>
+
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.4, duration: 0.6, ease: [0.32, 0.72, 0, 1] }}
+          >
+            <Link to="/game" className="group inline-flex items-center gap-6 bg-primary text-white pl-8 pr-3 py-3 rounded-full font-bold text-xl shadow-[0_20px_40px_-15px_rgba(37,99,235,0.3)] hover:shadow-[0_20px_50px_-10px_rgba(37,99,235,0.4)] transition-all duration-500 ease-spring active:scale-[0.98]">
+              <span>Start Quest</span>
+              <div className="w-12 h-12 rounded-full bg-white/20 flex items-center justify-center transition-transform duration-500 ease-spring group-hover:bg-white/30 group-hover:translate-x-1 group-hover:scale-105 group-hover:-translate-y-[1px]">
+                <FiArrowRight className="text-2xl" />
+              </div>
+            </Link>
+          </motion.div>
         </motion.div>
 
-        {/* Footer message */}
-        <motion.div
-          className="flex items-center justify-center gap-2 text-sm text-white drop-shadow-md font-semibold"
-          animate={{ opacity: [0.6, 1, 0.6] }}
-          transition={{ duration: 2, repeat: Infinity }}
-        >
-          <FiStar />
-          <span>Let's make learning fun!</span>
-          <FiStar />
-        </motion.div>
-      </motion.div>
+        {/* Right Column - Bento Grid */}
+        <div className="md:col-span-5 grid grid-cols-2 gap-4">
+          {/* Card 1 */}
+          <motion.div
+            className="col-span-2 bezel-outer"
+            initial={{ opacity: 0, y: 40, rotate: -2 }}
+            animate={{ opacity: 1, y: 0, rotate: 0 }}
+            transition={{ duration: 0.8, delay: 0.3, ease: [0.32, 0.72, 0, 1] }}
+          >
+            <div className="bezel-inner p-8 h-full flex flex-col justify-center gap-4 bg-gradient-to-br from-white to-slate-50">
+              <div className="w-14 h-14 rounded-2xl bg-indigo-50 flex items-center justify-center text-primary mb-2 shadow-inner">
+                <FiBook className="text-3xl" />
+              </div>
+              <div>
+                <h3 className="font-display text-2xl font-bold text-slate-800 mb-1">Interactive Quizzes</h3>
+                <p className="text-slate-500 text-sm font-medium leading-relaxed">Engage with image, audio, and grammar challenges.</p>
+              </div>
+            </div>
+          </motion.div>
+
+          {/* Card 2 */}
+          <motion.div
+            className="col-span-1 bezel-outer"
+            initial={{ opacity: 0, y: 40, x: 20 }}
+            animate={{ opacity: 1, y: 0, x: 0 }}
+            transition={{ duration: 0.8, delay: 0.4, ease: [0.32, 0.72, 0, 1] }}
+          >
+            <div className="bezel-inner p-6 h-full flex flex-col items-start gap-4">
+               <div className="w-12 h-12 rounded-2xl bg-emerald-50 flex items-center justify-center text-success shadow-inner">
+                <FiClock className="text-2xl" />
+              </div>
+              <div>
+                <h3 className="font-display text-xl font-bold text-slate-800">Timed</h3>
+                <p className="text-slate-500 text-xs font-medium">20 mins per quest</p>
+              </div>
+            </div>
+          </motion.div>
+
+          {/* Card 3 */}
+          <motion.div
+            className="col-span-1 bezel-outer"
+            initial={{ opacity: 0, y: 40, x: -20 }}
+            animate={{ opacity: 1, y: 0, x: 0 }}
+            transition={{ duration: 0.8, delay: 0.5, ease: [0.32, 0.72, 0, 1] }}
+          >
+            <div className="bezel-inner p-6 h-full flex flex-col items-start gap-4">
+               <div className="w-12 h-12 rounded-2xl bg-rose-50 flex items-center justify-center text-destructive shadow-inner">
+                <FiAward className="text-2xl" />
+              </div>
+              <div>
+                <h3 className="font-display text-xl font-bold text-slate-800">Scoring</h3>
+                <p className="text-slate-500 text-xs font-medium">Track your accuracy</p>
+              </div>
+            </div>
+          </motion.div>
+
+        </div>
+      </div>
     </div>
   );
 }

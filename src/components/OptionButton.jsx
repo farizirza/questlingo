@@ -1,50 +1,58 @@
 import { motion } from "framer-motion";
 
 export default function OptionButton({
-  option,
-  index,
+  text,
+  onClick,
   isSelected,
   isCorrect,
   disabled,
-  onClick,
 }) {
-  // Handle both string and object formats
-  const optionText = typeof option === "string" ? option : option.text;
-
-  let buttonClass =
-    "p-4 rounded-xl font-bold text-left w-full text-white border-2 drop-shadow-md";
-
-  if (!disabled) {
-    buttonClass +=
-      " bg-gradient-to-r from-purple-400 to-pink-400 border-white border-opacity-30 hover:shadow-lg";
-  } else if (isCorrect) {
-    buttonClass +=
-      " bg-gradient-to-r from-green-400 to-emerald-400 border-green-500";
+  // Determine styles based on state
+  let stateStyles = "bg-white text-slate-700 hover:bg-slate-50 border-slate-200";
+  let indicatorBg = "bg-primary";
+  let dotBg = "bg-white";
+  
+  if (disabled) {
+    if (isCorrect) {
+      // High contrast solid green for correct answers
+      stateStyles = "bg-success text-white border-success shadow-[0_10px_20px_-10px_rgba(16,185,129,0.6)]";
+      indicatorBg = "bg-white";
+      dotBg = "bg-success";
+    } else if (isSelected && !isCorrect) {
+      // High contrast solid red for incorrect selections
+      stateStyles = "bg-destructive text-white border-destructive shadow-[0_10px_20px_-10px_rgba(244,63,94,0.6)]";
+      indicatorBg = "bg-white";
+      dotBg = "bg-destructive";
+    } else {
+      // Dimmed unselected options
+      stateStyles = "bg-slate-50 text-slate-400 border-slate-100 opacity-50 cursor-not-allowed";
+    }
   } else if (isSelected) {
-    buttonClass +=
-      " bg-gradient-to-r from-red-400 to-orange-400 border-red-500";
-  } else {
-    buttonClass +=
-      " bg-gradient-to-r from-slate-300 to-slate-400 border-white border-opacity-20 opacity-60 text-gray-900";
+    // If we ever have a multi-step selection before confirm
+    stateStyles = "bg-primary text-white border-primary shadow-[0_10px_20px_-10px_rgba(37,99,235,0.6)]";
+    indicatorBg = "bg-white";
+    dotBg = "bg-primary";
   }
 
   return (
     <motion.button
       onClick={onClick}
       disabled={disabled}
-      className={buttonClass}
-      whileHover={!disabled ? { scale: 1.05, rotate: 1 } : {}}
-      whileTap={!disabled ? { scale: 0.95 } : {}}
+      className={`w-full group relative flex items-center justify-between p-5 rounded-[1.5rem] border font-bold text-left transition-colors duration-300 ${stateStyles}`}
+      whileHover={!disabled ? { scale: 0.99 } : {}}
+      whileTap={!disabled ? { scale: 0.97 } : {}}
       initial={{ opacity: 0, y: 10 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.2, delay: index * 0.05 }}
+      transition={{ duration: 0.4, ease: [0.32, 0.72, 0, 1] }}
     >
-      <span className="flex items-center gap-3">
-        <span className="w-8 h-8 rounded-full bg-white bg-opacity-30 flex items-center justify-center text-xs font-black border border-white">
-          {String.fromCharCode(65 + index)}
-        </span>
-        {optionText}
-      </span>
+      <span className="text-lg">{text}</span>
+      
+      {/* Nested indicator circle for the Button-in-Button aesthetic */}
+      <div className={`w-6 h-6 rounded-full flex items-center justify-center transition-all duration-300 ease-[cubic-bezier(0.32,0.72,0,1)] ${
+        disabled && (isCorrect || isSelected) ? "opacity-100 scale-100" : "opacity-0 scale-50 group-hover:opacity-100 group-hover:scale-100"
+      } ${indicatorBg}`}>
+        <div className={`w-2 h-2 rounded-full ${dotBg}`}></div>
+      </div>
     </motion.button>
   );
 }

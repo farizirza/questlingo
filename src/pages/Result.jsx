@@ -30,10 +30,11 @@ export default function Result() {
     if (isPassed) {
       // Lightweight confetti config
       confetti({
-        particleCount: 100,
-        spread: 70,
-        origin: { y: 0.6 },
-        duration: 2000,
+        particleCount: 150,
+        spread: 80,
+        origin: { y: 0.5 },
+        duration: 3000,
+        colors: ['#2563EB', '#10B981', '#F59E0B', '#F43F5E', '#8B5CF6']
       });
     }
   }, [isPassed]);
@@ -44,240 +45,150 @@ export default function Result() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-400 via-pink-400 to-blue-400 text-white flex flex-col items-center justify-center px-4 relative overflow-hidden">
-      {/* Animated background elements */}
-      <motion.div
-        className="absolute top-32 right-16 w-20 h-20 bg-yellow-300 rounded-full blur-2xl opacity-20"
-        animate={{ y: [0, 40, 0] }}
-        transition={{ duration: 5, repeat: Infinity }}
-      />
-      <motion.div
-        className="absolute bottom-20 left-20 w-32 h-32 bg-green-300 rounded-full blur-2xl opacity-20"
-        animate={{ x: [0, 40, 0] }}
-        transition={{ duration: 6, repeat: Infinity }}
-      />
+    <div className="min-h-[100dvh] bg-background flex flex-col items-center justify-center px-4 sm:px-8 relative overflow-hidden font-sans py-12">
+      {/* Soft Ethereal Orbs Background */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none z-0">
+        <motion.div
+          className="absolute top-[-10%] right-[-10%] w-[40vw] h-[40vw] rounded-full bg-primary/5 blur-[100px]"
+          animate={{ x: [0, -30, 0], y: [0, 40, 0] }}
+          transition={{ duration: 15, repeat: Infinity, ease: "linear" }}
+        />
+        <motion.div
+          className="absolute bottom-[-10%] left-[-10%] w-[40vw] h-[40vw] rounded-full bg-success/5 blur-[100px]"
+          animate={{ x: [0, 30, 0], y: [0, -40, 0] }}
+          transition={{ duration: 12, repeat: Infinity, ease: "linear" }}
+        />
+        <div className="absolute inset-0 opacity-[0.03] mix-blend-overlay" style={{ backgroundImage: 'url("data:image/svg+xml,%3Csvg viewBox=%220 0 200 200%22 xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cfilter id=%22noiseFilter%22%3E%3CfeTurbulence type=%22fractalNoise%22 baseFrequency=%220.65%22 numOctaves=%223%22 stitchTiles=%22stitch%22/%3E%3C/filter%3E%3Crect width=%22100%25%22 height=%22100%25%22 filter=%22url(%23noiseFilter)%22/%3E%3C/svg%3E")' }}></div>
+      </div>
 
       <motion.div
-        className="text-center space-y-8 max-w-2xl relative z-10"
-        initial={{ opacity: 0, y: 20 }}
+        className="max-w-3xl w-full relative z-10 flex flex-col gap-6"
+        initial={{ opacity: 0, y: 40 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.4 }}
+        transition={{ duration: 0.8, ease: [0.32, 0.72, 0, 1] }}
       >
-        {/* Title */}
-        <motion.div
-          className="flex items-center justify-center gap-3 mb-4"
-          animate={{ y: [0, -10, 0] }}
-          transition={{ duration: 2, repeat: Infinity }}
-        >
-          <FiCheckCircle className="text-5xl md:text-6xl text-green-300" />
-          <h1 className="text-5xl md:text-6xl font-black drop-shadow-lg">
-            Quiz Complete!
-          </h1>
-        </motion.div>
+        {/* Pass/Fail Banner - Double Bezel */}
+        <div className="bezel-outer">
+          <div className="bezel-inner p-10 flex flex-col items-center justify-center text-center">
+            {isPassed ? (
+              <>
+                <motion.div
+                  initial={{ scale: 0 }}
+                  animate={{ scale: 1 }}
+                  transition={{ type: "spring", stiffness: 200, damping: 20, delay: 0.2 }}
+                  className="w-24 h-24 bg-emerald-50 rounded-[2rem] flex items-center justify-center mb-6 shadow-inner text-success"
+                >
+                  <FiCheckCircle className="text-5xl" />
+                </motion.div>
+                <h1 className="text-4xl md:text-5xl font-display font-black text-slate-800 tracking-tight mb-3">
+                  Quest Passed!
+                </h1>
+                <p className="text-success font-bold text-lg bg-success/10 px-6 py-2 rounded-full">
+                  Outstanding performance!
+                </p>
+              </>
+            ) : (
+              <>
+                <motion.div
+                  initial={{ scale: 0 }}
+                  animate={{ scale: 1 }}
+                  transition={{ type: "spring", stiffness: 200, damping: 20, delay: 0.2 }}
+                  className="w-24 h-24 bg-rose-50 rounded-[2rem] flex items-center justify-center mb-6 shadow-inner text-destructive"
+                >
+                  <FiXCircle className="text-5xl" />
+                </motion.div>
+                <h1 className="text-4xl md:text-5xl font-display font-black text-slate-800 tracking-tight mb-3">
+                  Quest Failed
+                </h1>
+                <p className="text-destructive font-bold text-lg bg-destructive/10 px-6 py-2 rounded-full">
+                  Keep practicing, you need 70%.
+                </p>
+              </>
+            )}
+          </div>
+        </div>
 
-        {/* Pass/Fail Badge */}
-        <motion.div
-          className={`text-7xl font-black px-8 py-6 rounded-3xl border-3 drop-shadow-xl ${
-            isPassed
-              ? "bg-gradient-to-r from-green-300 to-emerald-300 border-white text-green-900"
-              : "bg-gradient-to-r from-red-300 to-orange-300 border-white text-red-900"
-          }`}
-          initial={{ opacity: 0, scale: 0.8 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.4, delay: 0.2 }}
-        >
-          {" "}
-          {isPassed ? (
-            <div className="flex items-center justify-center gap-2">
-              <FiCheckCircle className="text-3xl" />
-              <span>PASS</span>
-            </div>
-          ) : (
-            <div className="flex items-center justify-center gap-2">
-              <FiXCircle className="text-3xl" />
-              <span>FAIL</span>
-            </div>
-          )}
-        </motion.div>
-
-        {/* Stats Cards */}
-        <motion.div
-          className="grid grid-cols-1 md:grid-cols-3 gap-6"
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.4, delay: 0.4 }}
-        >
+        {/* Stats Grid - Asymmetrical Bento */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           {/* Score Card */}
           <motion.div
-            className="bg-white bg-opacity-20 backdrop-blur rounded-2xl p-6 border-2 border-white border-opacity-40 drop-shadow-lg"
-            whileHover={{ scale: 1.05 }}
-            transition={{ duration: 0.2 }}
+            className="bezel-outer col-span-1"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.3 }}
           >
-            <div className="flex items-center gap-2 mb-2">
-              <FiBarChart2 className="text-lg" />
-              <p className="text-sm font-bold text-white opacity-80">
-                Final Score
+            <div className="bezel-inner p-6 h-full flex flex-col items-center justify-center bg-indigo-50/30">
+              <div className="flex items-center gap-2 mb-2 text-primary">
+                <FiBarChart2 className="text-xl" />
+                <p className="text-xs font-bold uppercase tracking-[0.15em] text-slate-500">Score</p>
+              </div>
+              <p className="text-5xl font-display font-black text-slate-800">
+                {game.score}<span className="text-2xl text-slate-400">/{game.stats.totalQuestions}</span>
               </p>
             </div>
-            <motion.p
-              className="text-4xl font-black text-yellow-300"
-              animate={{ scale: [1, 1.1, 1] }}
-              transition={{ duration: 1, repeat: Infinity }}
-            >
-              {game.score}/{game.stats.totalQuestions}
-            </motion.p>
           </motion.div>
 
           {/* Accuracy Card */}
           <motion.div
-            className="bg-white bg-opacity-20 backdrop-blur rounded-2xl p-6 border-2 border-white border-opacity-40 drop-shadow-lg"
-            whileHover={{ scale: 1.05 }}
-            transition={{ duration: 0.2 }}
+            className="bezel-outer col-span-1"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.4 }}
           >
-            <div className="flex items-center gap-2 mb-2">
-              <FiTrendingUp className="text-lg" />
-              <p className="text-sm font-bold text-white opacity-80">
-                Accuracy
-              </p>
+            <div className="bezel-inner p-6 h-full flex flex-col items-center justify-center bg-emerald-50/30">
+              <div className="flex items-center gap-2 mb-2 text-success">
+                <FiTrendingUp className="text-xl" />
+                <p className="text-xs font-bold uppercase tracking-[0.15em] text-slate-500">Accuracy</p>
+              </div>
+              <p className="text-5xl font-display font-black text-slate-800">{accuracy}%</p>
             </div>
-            <p className="text-4xl font-black text-cyan-300">{accuracy}%</p>
           </motion.div>
 
           {/* Time Card */}
           <motion.div
-            className="bg-white bg-opacity-20 backdrop-blur rounded-2xl p-6 border-2 border-white border-opacity-40 drop-shadow-lg"
-            whileHover={{ scale: 1.05 }}
-            transition={{ duration: 0.2 }}
+            className="bezel-outer col-span-1"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.5 }}
           >
-            <div className="flex items-center gap-2 mb-2">
-              <FiClock className="text-lg" />
-              <p className="text-sm font-bold text-white opacity-80">
-                Time Spent
+            <div className="bezel-inner p-6 h-full flex flex-col items-center justify-center bg-rose-50/30">
+              <div className="flex items-center gap-2 mb-2 text-destructive">
+                <FiClock className="text-xl" />
+                <p className="text-xs font-bold uppercase tracking-[0.15em] text-slate-500">Time</p>
+              </div>
+              <p className="text-4xl font-display font-black text-slate-800">
+                {Math.floor((1200 - game.timeLeft) / 60)}m {Math.floor((1200 - game.timeLeft) % 60)}s
               </p>
             </div>
-            <p className="text-3xl font-black text-pink-300">
-              {Math.floor((1200 - game.timeLeft) / 60)}m{" "}
-              {Math.floor((1200 - game.timeLeft) % 60)}s
-            </p>
           </motion.div>
-        </motion.div>
-
-        {/* Detailed Stats */}
-        <motion.div
-          className="bg-white bg-opacity-15 backdrop-blur rounded-2xl p-6 border-2 border-white border-opacity-30 space-y-4 drop-shadow-lg"
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.4, delay: 0.5 }}
-        >
-          <div className="flex justify-between items-center">
-            <div className="flex items-center gap-2">
-              <FiCheck className="text-lg" />
-              <span className="font-bold text-white">Correct Answers</span>
-            </div>
-            <span className="text-2xl font-black text-green-300">
-              {game.stats.correctAnswers}
-            </span>
-          </div>
-          <motion.div
-            className="w-full bg-white bg-opacity-20 rounded-full h-3 overflow-hidden border border-white border-opacity-20"
-            initial={{ width: 0 }}
-            animate={{
-              width: "100%",
-            }}
-            transition={{ duration: 0.5, delay: 0.6 }}
-          >
-            <motion.div
-              className="bg-gradient-to-r from-green-400 to-emerald-400 h-full rounded-full"
-              initial={{ width: 0 }}
-              animate={{
-                width: `${(game.stats.correctAnswers / game.stats.totalQuestions) * 100}%`,
-              }}
-              transition={{ duration: 0.8, delay: 0.7, ease: "easeOut" }}
-            />
-          </motion.div>
-
-          <div className="flex justify-between items-center pt-2">
-            <div className="flex items-center gap-2">
-              <FiX className="text-lg" />
-              <span className="font-bold text-white">Incorrect Answers</span>
-            </div>
-            <span className="text-2xl font-black text-red-300">
-              {game.stats.incorrectAnswers}
-            </span>
-          </div>
-          <motion.div
-            className="w-full bg-white bg-opacity-20 rounded-full h-3 overflow-hidden border border-white border-opacity-20"
-            initial={{ width: 0 }}
-            animate={{ width: "100%" }}
-            transition={{ duration: 0.5, delay: 0.65 }}
-          >
-            <motion.div
-              className="bg-gradient-to-r from-red-400 to-orange-400 h-full rounded-full"
-              initial={{ width: 0 }}
-              animate={{
-                width: `${(game.stats.incorrectAnswers / game.stats.totalQuestions) * 100}%`,
-              }}
-              transition={{ duration: 0.8, delay: 0.75, ease: "easeOut" }}
-            />
-          </motion.div>
-        </motion.div>
-
-        {/* Pass Message */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.3, delay: 0.9 }}
-        >
-          {isPassed ? (
-            <div className="flex items-center justify-center gap-2 text-xl font-black text-white drop-shadow-md">
-              <FiCheckCircle />
-              <p>Awesome! You passed the quiz!</p>
-            </div>
-          ) : (
-            <div className="flex items-center justify-center gap-2 text-xl font-bold text-white drop-shadow-md">
-              <FiZap />
-              <p>Keep practicing! You need at least 70% to pass.</p>
-            </div>
-          )}
-        </motion.div>
+        </div>
 
         {/* Action Buttons */}
-        <motion.div
-          className="grid grid-cols-1 md:grid-cols-3 gap-4 pt-4"
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.3, delay: 1 }}
-        >
-          <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-            <Link
-              to="/"
-              className="block px-6 py-3 bg-gradient-to-r from-blue-400 to-purple-400 hover:from-blue-500 hover:to-purple-500 rounded-full font-bold text-white drop-shadow-lg border-2 border-white border-opacity-50 transition-colors text-center flex items-center justify-center gap-2"
-            >
-              <FiHome className="text-lg" />
-              <span>Home</span>
-            </Link>
-          </motion.div>
-
-          <motion.button
-            onClick={handleRetry}
-            className="px-6 py-3 bg-gradient-to-r from-yellow-400 to-orange-400 hover:from-yellow-500 hover:to-orange-500 rounded-full font-bold text-white drop-shadow-lg border-2 border-white border-opacity-50 flex items-center justify-center gap-2"
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 pt-2">
+          <Link
+            to="/"
+            className="group flex items-center justify-center gap-3 px-6 py-4 bg-white hover:bg-slate-50 rounded-full font-bold text-slate-700 border border-slate-200 shadow-sm transition-all duration-300 active:scale-[0.98]"
           >
-            <FiRefreshCw className="text-lg" />
-            <span>Retry</span>
-          </motion.button>
+            <FiHome className="text-xl text-slate-400 group-hover:text-primary transition-colors" />
+            <span>Home</span>
+          </Link>
 
-          <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-            <Link
-              to="/review"
-              className="block px-6 py-3 bg-gradient-to-r from-pink-400 to-red-400 hover:from-pink-500 hover:to-red-500 rounded-full font-bold text-white drop-shadow-lg border-2 border-white border-opacity-50 transition-colors text-center flex items-center justify-center gap-2"
-            >
-              <FiEdit className="text-lg" />
-              <span>Review</span>
-            </Link>
-          </motion.div>
-        </motion.div>
+          <button
+            onClick={handleRetry}
+            className="group flex items-center justify-center gap-3 px-6 py-4 bg-primary text-white rounded-full font-bold shadow-[0_10px_20px_-10px_rgba(37,99,235,0.4)] hover:shadow-[0_10px_30px_-10px_rgba(37,99,235,0.5)] transition-all duration-300 active:scale-[0.98]"
+          >
+            <FiRefreshCw className="text-xl group-hover:rotate-180 transition-transform duration-500" />
+            <span>Retry Quest</span>
+          </button>
+
+          <Link
+            to="/review"
+            className="group flex items-center justify-center gap-3 px-6 py-4 bg-slate-900 text-white hover:bg-slate-800 rounded-full font-bold shadow-lg transition-all duration-300 active:scale-[0.98]"
+          >
+            <FiEdit className="text-xl" />
+            <span>Review Answers</span>
+          </Link>
+        </div>
       </motion.div>
     </div>
   );

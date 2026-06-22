@@ -1,59 +1,36 @@
 import { motion } from "framer-motion";
-import { FiHelpCircle } from "react-icons/fi";
 import OptionButton from "./OptionButton";
 
 export default function GrammarQuestion({
   question,
-  currentIndex,
-  totalQuestions,
   isAnswered,
   selectedAnswer,
   onAnswer,
 }) {
   return (
-    <motion.div
-      className="space-y-6"
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      exit={{ opacity: 0, y: -20 }}
-      transition={{ duration: 0.25 }}
-    >
-      {/* Question Container */}
-      <div className="bg-white bg-opacity-15 backdrop-blur rounded-2xl p-8 border-2 border-white border-opacity-30 drop-shadow-lg">
-        <div className="mb-6">
-          <div className="flex items-center gap-2 mb-2">
-            <FiHelpCircle className="text-lg" />
-            <p className="text-sm font-bold text-white opacity-80">
-              Question {currentIndex + 1}
-            </p>
-          </div>
-          <h2 className="text-3xl md:text-4xl font-bold leading-relaxed text-white drop-shadow-md">
-            {question.question}
-          </h2>
-        </div>
-      </div>
-
-      {/* Options */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        {question.options &&
-          question.options.map((option, idx) => {
-            const optionKey = typeof option === "string" ? option : option.key;
-            const isSelected = selectedAnswer === optionKey;
-            const isCorrect = optionKey === question.answer;
-
+    <div className="bezel-outer">
+      <div className="bezel-inner p-8 md:p-10">
+        <h2 className="text-3xl md:text-4xl font-display font-bold text-slate-900 leading-tight mb-8">
+          {question.question}
+        </h2>
+        <div className="flex flex-col gap-4">
+          {question.options.map((option, idx) => {
+            const optKey = typeof option === "string" ? option : option.key;
+            const optText = typeof option === "string" ? option : option.text;
+            
             return (
               <OptionButton
-                key={idx}
-                option={option}
-                index={idx}
-                isSelected={isSelected}
-                isCorrect={isCorrect}
+                key={optKey || idx}
+                text={optText}
+                onClick={() => onAnswer(optKey)}
+                isSelected={selectedAnswer === optKey}
+                isCorrect={isAnswered && optKey === question.answer}
                 disabled={isAnswered}
-                onClick={() => !isAnswered && onAnswer(optionKey)}
               />
             );
           })}
+        </div>
       </div>
-    </motion.div>
+    </div>
   );
 }
