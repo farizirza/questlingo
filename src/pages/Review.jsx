@@ -12,6 +12,7 @@ import {
   FiRefreshCw,
 } from "react-icons/fi";
 import { useGame } from "../hooks/useGame";
+import CustomAudioPlayer from "../components/CustomAudioPlayer";
 
 export default function Review() {
   const game = useGame();
@@ -168,11 +169,9 @@ export default function Review() {
 
                   {/* Media */}
                   {question.media_url && (
-                    <div className="mb-8 rounded-2xl overflow-hidden border border-slate-100 bg-slate-50 flex items-center justify-center p-6 shadow-inner">
+                    <div className={`mb-8 ${question.type === "audio" ? "" : "rounded-2xl overflow-hidden border border-slate-100 bg-slate-50 flex items-center justify-center p-6 shadow-inner"}`}>
                       {question.type === "audio" ? (
-                        <audio controls className="w-full max-w-md" controlsList="nodownload">
-                          <source src={question.media_url} type="audio/mpeg" />
-                        </audio>
+                        <CustomAudioPlayer src={question.media_url} />
                       ) : (
                         <img
                           src={question.media_url}
