@@ -13,13 +13,10 @@ export default function ImageQuestion({
         
         {/* Image Container - Nested Architecture */}
         <div className="w-full md:w-1/2 flex items-center justify-center p-4 bg-slate-50 rounded-[2rem] border border-slate-100 shadow-inner">
-          <motion.img
+          <img
             src={question.media_url}
             alt="Question"
             className="w-full h-auto max-h-64 object-contain rounded-xl"
-            initial={{ opacity: 0, scale: 0.95 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.8, ease: [0.32, 0.72, 0, 1] }}
           />
         </div>
 

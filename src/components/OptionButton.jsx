@@ -41,9 +41,6 @@ export default function OptionButton({
       className={`w-full group relative flex items-center justify-between p-5 rounded-[1.5rem] border font-bold text-left transition-colors duration-300 ${stateStyles}`}
       whileHover={!disabled ? { scale: 0.99 } : {}}
       whileTap={!disabled ? { scale: 0.97 } : {}}
-      initial={{ opacity: 0, y: 10 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.4, ease: [0.32, 0.72, 0, 1] }}
     >
       <span className="text-lg">{text}</span>
       
