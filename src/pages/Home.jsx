@@ -56,7 +56,7 @@ export default function Home() {
             transition={{ delay: 0.4, duration: 0.6, ease: [0.32, 0.72, 0, 1] }}
           >
             <Link to="/game" className="group inline-flex items-center gap-6 bg-primary text-white pl-8 pr-3 py-3 rounded-full font-bold text-xl shadow-[0_20px_40px_-15px_rgba(37,99,235,0.3)] hover:shadow-[0_20px_50px_-10px_rgba(37,99,235,0.4)] transition-all duration-500 ease-spring active:scale-[0.98]">
-              <span>Start Quest</span>
+              <span>Start Quiz</span>
               <div className="w-12 h-12 rounded-full bg-white/20 flex items-center justify-center transition-transform duration-500 ease-spring group-hover:bg-white/30 group-hover:translate-x-1 group-hover:scale-105 group-hover:-translate-y-[1px]">
                 <FiArrowRight className="text-2xl" />
               </div>
